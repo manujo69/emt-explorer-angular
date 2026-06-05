@@ -1,7 +1,7 @@
 import type { LineaEMT } from '../types/emt.types'
 
 // Each entry is [sentido1Color, sentido2Color] — complementary pairs
-const PALETTE: ReadonlyArray<readonly [string, string]> = [
+const PALETTE: readonly (readonly [string, string])[] = [
   ['#1E88E5', '#F57C00'],
   ['#43A047', '#E53935'],
   ['#8E24AA', '#F9A825'],

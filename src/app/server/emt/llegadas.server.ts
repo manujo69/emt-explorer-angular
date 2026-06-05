@@ -50,7 +50,7 @@ function computeHaversineFallback(
   const llegadas: LlegadaLinea[] = []
 
   for (const targetParada of paradaEntries) {
-    const { codLinea, sentido, orden: targetOrden } = targetParada
+    const { codLinea, sentido } = targetParada
 
     // Paradas for this line+sentido sorted DESCENDING by orden
     const routeParadas = todasParadas

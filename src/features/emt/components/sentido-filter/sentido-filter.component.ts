@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { EMTResourcesService } from '../../services/emt-resources.service'
 import { EMTStore } from '../../store/emt.store'
 import { isCircular } from '../../utils/is-circular'
-import { getSentidoColor, getTextColor } from '../../utils/linea-colors'
+import { getSentidoColor } from '../../utils/linea-colors'
 
 @Component({
   selector: 'app-sentido-filter',

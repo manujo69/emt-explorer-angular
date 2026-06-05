@@ -1,10 +1,10 @@
 export function catmullRomSmooth(
-  points: Array<{ lat: number; lng: number }>,
+  points: { lat: number; lng: number }[],
   factor: number,
-): Array<{ lat: number; lng: number }> {
+): { lat: number; lng: number }[] {
   if (points.length < 2) return [...points]
 
-  const result: Array<{ lat: number; lng: number }> = []
+  const result: { lat: number; lng: number }[] = []
 
   // Pad with phantom endpoints for a closed-enough tangent at boundaries
   const pts = [points[0], ...points, points[points.length - 1]]

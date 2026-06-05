@@ -10,7 +10,9 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "serve:ssr:emt-explorer-angular": "node dist/emt-explorer-angular/server/server.mjs",
-    "gtfs:download": "node scripts/download-gtfs.mjs"
+    "gtfs:download": "node scripts/download-gtfs.mjs",
+    "lint": "eslint --max-warnings 0 src/ && echo 'ESLint: sin errores ni warnings'",
+    "lint:fix": "eslint --fix src/ && echo 'ESLint: correcciones aplicadas'"
   },
   "prettier": {
     "printWidth": 100,
@@ -57,6 +59,8 @@
     "@types/express": "^5.0.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^20.17.19",
+    "angular-eslint": "^20.7.0",
+    "eslint": "^9.39.4",
     "fast-check": "^4.8.0",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
@@ -64,6 +68,7 @@
     "msw": "^2.14.6",
     "tailwindcss": "^4.3.0",
     "ts-node": "^10.9.2",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.60.1"
   }
 }
