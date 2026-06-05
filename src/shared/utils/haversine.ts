@@ -14,3 +14,5 @@ export function haversine(
     Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2
   return 2 * EARTH_RADIUS_M * Math.asin(Math.sqrt(a))
 }
+const x: any = 1
+const x: any = 1

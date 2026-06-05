@@ -12,7 +12,8 @@
     "serve:ssr:emt-explorer-angular": "node dist/emt-explorer-angular/server/server.mjs",
     "gtfs:download": "node scripts/download-gtfs.mjs",
     "lint": "eslint --max-warnings 0 src/ && echo 'ESLint: sin errores ni warnings'",
-    "lint:fix": "eslint --fix src/ && echo 'ESLint: correcciones aplicadas'"
+    "lint:fix": "eslint --fix src/ && echo 'ESLint: correcciones aplicadas'",
+    "prepare": "husky"
   },
   "prettier": {
     "printWidth": 100,
@@ -25,6 +26,10 @@
         }
       }
     ]
+  },
+  "lint-staged": {
+    "src/**/*.ts": "eslint --max-warnings 0",
+    "src/**/*.html": "eslint --max-warnings 0"
   },
   "private": true,
   "dependencies": {
@@ -62,9 +67,11 @@
     "angular-eslint": "^20.7.0",
     "eslint": "^9.39.4",
     "fast-check": "^4.8.0",
+    "husky": "^9.1.7",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "jest-preset-angular": "^16.1.5",
+    "lint-staged": "^17.0.7",
     "msw": "^2.14.6",
     "tailwindcss": "^4.3.0",
     "ts-node": "^10.9.2",
