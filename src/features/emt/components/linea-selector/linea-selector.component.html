@@ -1,0 +1,18 @@
+@if (isLoading()) {
+  <span class="text-gray-500 text-sm">Cargando líneas...</span>
+} @else if (hasError()) {
+  <span class="text-red-400 text-sm">Error al cargar líneas</span>
+} @else {
+  <select
+    class="bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-1.5 text-sm
+           focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer max-w-[220px]"
+    [value]="lineaSeleccionada() ?? ''"
+    aria-label="Seleccionar línea de autobús"
+    (change)="onSelect($event)"
+  >
+    <option value="">Seleccionar línea</option>
+    @for (linea of lineas(); track linea.codLinea) {
+      <option [value]="linea.codLinea">{{ optionLabel(linea) }}</option>
+    }
+  </select>
+}

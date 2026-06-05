@@ -1,0 +1,26 @@
+<div
+  class="bg-gray-900/90 backdrop-blur rounded-xl p-3 shadow-lg space-y-2 min-w-[180px]"
+  [class.invisible]="!shouldShow()"
+  [class.pointer-events-none]="!shouldShow()"
+  [attr.aria-hidden]="!shouldShow() || null"
+>
+  @for (sentido of [1, 2]; track sentido) {
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        role="switch"
+        [attr.aria-checked]="isActive(sentido)"
+        [attr.aria-label]="'Filtrar sentido ' + sentido + ': ' + label(sentido)"
+        class="relative w-10 h-5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 shrink-0"
+        [style.background]="isActive(sentido) ? trackColor(sentido) : '#4b5563'"
+        (click)="toggle(sentido)"
+      >
+        <span
+          class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform"
+          [class.translate-x-5]="isActive(sentido)"
+        ></span>
+      </button>
+      <span class="text-sm text-gray-200 leading-tight truncate">{{ label(sentido) }}</span>
+    </div>
+  }
+</div>

@@ -1,0 +1,41 @@
+@if (showS1() && featureS1()) {
+  <mgl-geojson-source id="ruta-s1" [data]="featureS1()!"></mgl-geojson-source>
+  <mgl-layer
+    id="ruta-line-s1"
+    type="line"
+    source="ruta-s1"
+    [paint]="paintS1()"
+    [layout]="lineLayout"
+  ></mgl-layer>
+}
+@if (showS2() && featureS2()) {
+  <mgl-geojson-source id="ruta-s2" [data]="featureS2()!"></mgl-geojson-source>
+  <mgl-layer
+    id="ruta-line-s2"
+    type="line"
+    source="ruta-s2"
+    [paint]="paintS2()"
+    [layout]="lineLayout"
+  ></mgl-layer>
+}
+@for (parada of visibleParadas(); track parada.codParada + '-' + parada.sentido) {
+  <mgl-marker [lngLat]="[parada.longitud, parada.latitud]">
+    <button
+      type="button"
+      class="stop-marker focus:outline-none focus:ring-2 focus:ring-white rounded-full"
+      [attr.aria-label]="'Parada ' + parada.nombreParada"
+      (click)="selectParada(parada.codParada)"
+    >
+      <svg viewBox="0 0 20 20" aria-hidden="true">
+        <circle
+          cx="10"
+          cy="10"
+          r="8"
+          [attr.fill]="sentidoColors()[parada.sentido]"
+          stroke="white"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+  </mgl-marker>
+}

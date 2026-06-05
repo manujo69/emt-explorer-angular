@@ -1,0 +1,62 @@
+<div class="min-h-screen bg-gray-950 text-white">
+  <header class="bg-gray-900 border-b border-gray-800 px-6 py-4">
+    <div class="max-w-4xl mx-auto flex items-center gap-3">
+      <span class="text-2xl font-bold tracking-tight">EMT Málaga</span>
+      <span class="text-gray-500 text-sm">Explorer</span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 py-8">
+    @if (lineasResource.isLoading()) {
+      <div class="flex items-center gap-3 text-gray-400">
+        <span class="animate-spin text-xl">⟳</span>
+        <span>Cargando líneas...</span>
+      </div>
+    } @else if (lineasResource.error()) {
+      <div class="bg-red-900/30 border border-red-700 rounded-lg p-4 text-red-300">
+        Error al cargar las líneas. Asegúrate de que el servidor SSR está corriendo.
+      </div>
+    } @else {
+      <div class="mb-6">
+        <h2 class="text-lg font-semibold text-gray-200 mb-1">Selecciona una línea</h2>
+        <p class="text-sm text-gray-500">{{ lineasResource.value()?.length ?? 0 }} líneas disponibles</p>
+      </div>
+
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+        @for (linea of lineasResource.value() ?? []; track linea.codLinea) {
+          <button
+            class="rounded-lg px-3 py-2 text-sm font-medium transition-colors"
+            [class]="lineaSeleccionada() === linea.codLinea
+              ? 'bg-blue-600 text-white ring-2 ring-blue-400'
+              : 'bg-gray-800 text-gray-200 hover:bg-gray-700'"
+            (click)="seleccionar(linea.codLinea)"
+          >
+            {{ linea.codLinea }}
+          </button>
+        }
+      </div>
+
+      @if (lineaSeleccionada()) {
+        <div class="mt-8 bg-gray-900 rounded-xl p-6 border border-gray-800">
+          <h3 class="font-semibold text-gray-100 mb-1">
+            Línea {{ lineaSeleccionada() }}
+          </h3>
+          @if (lineaInfo(); as info) {
+            <p class="text-gray-400 text-sm">{{ info.nombreLinea }}</p>
+            @if (info.cabeceraIda) {
+              <div class="mt-3 flex gap-4 text-sm">
+                <span class="text-blue-400">Ida: {{ info.cabeceraIda }}</span>
+                @if (info.cabeceraVuelta) {
+                  <span class="text-orange-400">Vuelta: {{ info.cabeceraVuelta }}</span>
+                }
+              </div>
+            }
+          }
+          <p class="text-xs text-gray-600 mt-4">
+            El mapa se implementará en la siguiente fase.
+          </p>
+        </div>
+      }
+    }
+  </main>
+</div>

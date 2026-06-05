@@ -1,0 +1,33 @@
+<div class="relative w-full h-full">
+  <mgl-map
+    class="w-full h-full"
+    [mapStyle]="mapStyle"
+    [center]="mapCenter"
+    [zoom]="mapZoom"
+    (mapLoad)="onMapLoad($event)"
+    (zoomEnd)="onZoomEnd()"
+  >
+    <app-ruta-linea />
+    <app-bus-markers-layer [zoom]="zoom()" />
+    <app-parada-modal />
+  </mgl-map>
+
+  @if (isFirstLoad()) {
+    <div class="absolute inset-0 flex items-center justify-center bg-gray-900/60 rounded-lg">
+      <app-loading-spinner label="Cargando autobuses..." />
+    </div>
+  }
+
+  @if (isRefreshing()) {
+    <div class="absolute top-3 right-3 flex items-center gap-1.5 bg-gray-900/80 rounded-full px-3 py-1.5 text-xs text-gray-300">
+      <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+      Actualizando
+    </div>
+  }
+
+  @if (hasError()) {
+    <div class="absolute bottom-4 left-4 right-4">
+      <app-error-message [message]="errorMsg()" (retry)="retryUbicaciones()" />
+    </div>
+  }
+</div>
