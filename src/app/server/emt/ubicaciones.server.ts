@@ -1,4 +1,4 @@
-import { parseUbicacionesCSV } from '../../../shared/utils/csv-parser'
+import { parseUbicacionesCSV } from '../../../emt/utils/csv-parser'
 import { EMT_UBICACIONES_URL, LINEA_PARAM_REGEX } from './constants'
 import { fetchEMT } from './emt-http'
 

@@ -1,5 +1,5 @@
-import type { LlegadaLinea } from '../../../features/emt/types/emt.types'
-import { parseLineasCSV, parseParadasCSV, parseUbicacionesCSV } from '../../../shared/utils/csv-parser'
+import type { LlegadaLinea } from '../../../emt/types/emt.types'
+import { parseLineasCSV, parseParadasCSV, parseUbicacionesCSV } from '../../../emt/utils/csv-parser'
 import { haversine } from '../../../shared/utils/haversine'
 import { EMT_LINEAS_URL, EMT_UBICACIONES_URL, PARADA_PARAM_REGEX } from './constants'
 import { fetchEMT } from './emt-http'

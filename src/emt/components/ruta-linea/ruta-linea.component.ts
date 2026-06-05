@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core'
 import { GeoJSONSourceComponent, LayerComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl'
 import type { FeatureCollection, LineString } from 'geojson'
-import { catmullRomSmooth } from '../../../../shared/utils/catmull-rom-smooth'
+import { catmullRomSmooth } from '../../../shared/utils/catmull-rom-smooth'
 import { EMTResourcesService } from '../../services/emt-resources.service'
 import { EMTStore } from '../../store/emt.store'
 import type { ParadaEMT, ShapePoint } from '../../types/emt.types'

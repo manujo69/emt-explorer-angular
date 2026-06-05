@@ -1,4 +1,4 @@
-import type { BusUbicacion, LineaEMT, ParadaEMT } from '../../features/emt/types/emt.types'
+import type { BusUbicacion, LineaEMT, ParadaEMT } from '../types/emt.types'
 
 export function detectDelimiter(line: string): string {
   const semicolons = (line.match(/;/g) ?? []).length

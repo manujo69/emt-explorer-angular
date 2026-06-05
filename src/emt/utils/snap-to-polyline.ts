@@ -1,4 +1,4 @@
-import type { ShapePoint } from '../../features/emt/types/emt.types'
+import type { ShapePoint } from '../types/emt.types'
 
 export function snapToPolyline(
   lat: number,

@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import type { ShapePoint, ShapesByDirection } from '../../../features/emt/types/emt.types'
+import type { ShapePoint, ShapesByDirection } from '../../../emt/types/emt.types'
 import { LINEA_PARAM_REGEX } from './constants'
 
 const GTFS_DIR = join(process.cwd(), 'data', 'gtfs')

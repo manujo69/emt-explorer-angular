@@ -1,4 +1,4 @@
-import { parseLineasCSV } from '../../../shared/utils/csv-parser'
+import { parseLineasCSV } from '../../../emt/utils/csv-parser'
 import { EMT_LINEAS_URL } from './constants'
 import { fetchEMT } from './emt-http'
 

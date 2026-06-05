@@ -1,6 +1,6 @@
 import fc from 'fast-check'
 import { snapToPolyline } from './snap-to-polyline'
-import type { ShapePoint } from '../../features/emt/types/emt.types'
+import type { ShapePoint } from '../types/emt.types'
 
 function pt(latitud: number, longitud: number, sequence = 0): ShapePoint {
   return { latitud, longitud, sequence }

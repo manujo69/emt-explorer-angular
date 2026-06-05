@@ -20,7 +20,7 @@ const config: Config = {
   },
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
-    'src/features/**/*.ts',
+    'src/emt/**/*.ts',
     'src/shared/**/*.ts',
     '!src/**/*.spec.ts',
     '!src/**/*.test.ts',

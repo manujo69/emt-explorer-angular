@@ -1,11 +1,11 @@
 <div class="relative w-full h-full">
   <mgl-map
     class="w-full h-full"
+    appMapShell
     [mapStyle]="mapStyle"
     [center]="mapCenter"
     [zoom]="mapZoom"
-    (mapLoad)="onMapLoad($event)"
-    (zoomEnd)="onZoomEnd()"
+    (mapZoom)="zoom.set($event)"
   >
     <app-ruta-linea />
     <app-bus-markers-layer [zoom]="zoom()" />
