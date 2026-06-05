@@ -49,6 +49,6 @@ export class BusMarkersLayerComponent {
         this._cachedLinea.set(linea)
         this._cachedBuses.set([])
       }
-    }, { allowSignalWrites: true })
+    })
   }
 }
