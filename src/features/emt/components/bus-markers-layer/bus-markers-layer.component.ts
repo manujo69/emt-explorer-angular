@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core'
 import { EMTResourcesService } from '../../services/emt-resources.service'
 import { EMTStore } from '../../store/emt.store'
 import type { BusUbicacion } from '../../types/emt.types'
@@ -18,10 +18,9 @@ export class BusMarkersLayerComponent {
   private readonly resources = inject(EMTResourcesService)
   private readonly store = inject(EMTStore)
 
-  // Cache para evitar parpadeo cuando el recurso devuelve [] transitoriamente.
-  // computed() no tiene memoria, por eso el caché necesita effect().
-  private readonly _cachedBuses = signal<BusUbicacion[]>([])
-  private readonly _cachedLinea = signal<string | null>(null)
+  // Plain properties (not signals) avoid effect() + signal writes inside tick()
+  private _cachedBuses: BusUbicacion[] = []
+  private _cachedLinea: string | null = null
 
   private readonly _raw = computed((): BusUbicacion[] => {
     const buses = this.resources.ubicacionesResource.value() ?? []
@@ -32,23 +31,15 @@ export class BusMarkersLayerComponent {
   readonly filteredBuses = computed((): BusUbicacion[] => {
     const linea = this.store.lineaSeleccionada()
     const raw = this._raw()
-    if (raw.length > 0) return raw
-    // Misma línea pero sin datos aún: devuelve el último estado conocido
-    return linea === this._cachedLinea() ? this._cachedBuses() : []
+    if (raw.length > 0) {
+      this._cachedLinea = linea
+      this._cachedBuses = raw
+      return raw
+    }
+    if (linea !== this._cachedLinea) {
+      this._cachedLinea = linea
+      this._cachedBuses = []
+    }
+    return this._cachedBuses
   })
-
-  constructor() {
-    effect(() => {
-      const linea = this.store.lineaSeleccionada()
-      const buses = this._raw()
-      if (buses.length > 0) {
-        this._cachedLinea.set(linea)
-        this._cachedBuses.set(buses)
-      } else if (linea !== this._cachedLinea()) {
-        // Línea nueva sin buses aún: limpia el caché para no mostrar la línea anterior
-        this._cachedLinea.set(linea)
-        this._cachedBuses.set([])
-      }
-    })
-  }
 }

@@ -28,7 +28,6 @@ describe('BusMarkersLayerComponent', () => {
       providers: [{ provide: EMTResourcesService, useValue: mockResources }],
     })
     TestBed.inject(EMTStore).setLineaSeleccionada('1')
-    TestBed.flushEffects()
     expect(fixture.componentInstance.filteredBuses()).toHaveLength(2)
   })
 
@@ -40,7 +39,6 @@ describe('BusMarkersLayerComponent', () => {
     })
     const store = TestBed.inject(EMTStore)
     store.setLineaSeleccionada('1')
-    TestBed.flushEffects()
     store.toggleSentido(2)
     expect(fixture.componentInstance.filteredBuses()).toHaveLength(1)
     expect(fixture.componentInstance.filteredBuses()[0].codBus).toBe('B1')
@@ -54,13 +52,11 @@ describe('BusMarkersLayerComponent', () => {
     })
     const store = TestBed.inject(EMTStore)
     store.setLineaSeleccionada('1')
-    TestBed.flushEffects()
+    // Prime the cache
+    expect(fixture.componentInstance.filteredBuses()).toHaveLength(1)
 
     // Resource momentarily returns empty (simulating poll cycle)
     mockResources.ubicacionesResource.value.set([])
-    TestBed.flushEffects()
-
-    // Should keep showing the cached bus
     expect(fixture.componentInstance.filteredBuses()).toHaveLength(1)
     expect(fixture.componentInstance.filteredBuses()[0].codBus).toBe('B1')
   })
@@ -73,13 +69,12 @@ describe('BusMarkersLayerComponent', () => {
     })
     const store = TestBed.inject(EMTStore)
     store.setLineaSeleccionada('1')
-    TestBed.flushEffects()
+    // Prime the cache
+    expect(fixture.componentInstance.filteredBuses()).toHaveLength(1)
 
     // Switch to a different line (no buses yet)
     mockResources.ubicacionesResource.value.set([])
     store.setLineaSeleccionada('2')
-    TestBed.flushEffects()
-
     expect(fixture.componentInstance.filteredBuses()).toHaveLength(0)
   })
 })

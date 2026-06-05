@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/angular'
+import { NO_ERRORS_SCHEMA, signal } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
-import { signal } from '@angular/core'
 import { MapaEMTComponent } from './mapa-emt.component'
 import { EMTResourcesService } from '../../services/emt-resources.service'
 import { EMTStore } from '../../store/emt.store'
@@ -23,10 +23,17 @@ function buildMockResources(options: {
   return { ubicacionesResource, lineasResource: noRes, paradasResource: noRes, shapesResource: noRes, llegadasResource: noRes }
 }
 
+const BASE_OPTIONS = {
+  configureTestBed: (testBed: typeof TestBed) => {
+    testBed.overrideComponent(MapaEMTComponent, { set: { schemas: [NO_ERRORS_SCHEMA] } })
+  },
+}
+
 describe('MapaEMTComponent', () => {
   it('isFirstLoad is true when a line is selected, loading and no buses yet', async () => {
     const mockResources = buildMockResources({ busesLoading: true })
     const { fixture } = await render(MapaEMTComponent, {
+      ...BASE_OPTIONS,
       providers: [{ provide: EMTResourcesService, useValue: mockResources }],
     })
     TestBed.inject(EMTStore).setLineaSeleccionada('1')
@@ -36,6 +43,7 @@ describe('MapaEMTComponent', () => {
   it('isFirstLoad is false when there are buses already', async () => {
     const mockResources = buildMockResources({ buses: [BUS], busesLoading: true })
     const { fixture } = await render(MapaEMTComponent, {
+      ...BASE_OPTIONS,
       providers: [{ provide: EMTResourcesService, useValue: mockResources }],
     })
     TestBed.inject(EMTStore).setLineaSeleccionada('1')
@@ -45,6 +53,7 @@ describe('MapaEMTComponent', () => {
   it('isRefreshing is true when loading with existing buses', async () => {
     const mockResources = buildMockResources({ buses: [BUS], busesLoading: true })
     const { fixture } = await render(MapaEMTComponent, {
+      ...BASE_OPTIONS,
       providers: [{ provide: EMTResourcesService, useValue: mockResources }],
     })
     expect(fixture.componentInstance.isRefreshing()).toBe(true)
@@ -53,6 +62,7 @@ describe('MapaEMTComponent', () => {
   it('hasError is true when there is an error and not loading', async () => {
     const mockResources = buildMockResources({ busesError: new Error('timeout') })
     const { fixture } = await render(MapaEMTComponent, {
+      ...BASE_OPTIONS,
       providers: [{ provide: EMTResourcesService, useValue: mockResources }],
     })
     expect(fixture.componentInstance.hasError()).toBe(true)
@@ -61,6 +71,7 @@ describe('MapaEMTComponent', () => {
   it('hasError is false when loading despite having an error', async () => {
     const mockResources = buildMockResources({ busesError: new Error('timeout'), busesLoading: true })
     const { fixture } = await render(MapaEMTComponent, {
+      ...BASE_OPTIONS,
       providers: [{ provide: EMTResourcesService, useValue: mockResources }],
     })
     expect(fixture.componentInstance.hasError()).toBe(false)
@@ -69,6 +80,7 @@ describe('MapaEMTComponent', () => {
   it('shows loading spinner when isFirstLoad', async () => {
     const mockResources = buildMockResources({ busesLoading: true })
     const { fixture } = await render(MapaEMTComponent, {
+      ...BASE_OPTIONS,
       providers: [{ provide: EMTResourcesService, useValue: mockResources }],
     })
     TestBed.inject(EMTStore).setLineaSeleccionada('1')
@@ -79,6 +91,7 @@ describe('MapaEMTComponent', () => {
   it('shows error message and retry button when hasError', async () => {
     const mockResources = buildMockResources({ busesError: new Error('Network error') })
     await render(MapaEMTComponent, {
+      ...BASE_OPTIONS,
       providers: [{ provide: EMTResourcesService, useValue: mockResources }],
     })
     expect(screen.getByRole('button', { name: /Reintentar/i })).toBeInTheDocument()
@@ -87,6 +100,7 @@ describe('MapaEMTComponent', () => {
   it('retryUbicaciones calls reload on the resource', async () => {
     const mockResources = buildMockResources({ busesError: new Error('timeout') })
     await render(MapaEMTComponent, {
+      ...BASE_OPTIONS,
       providers: [{ provide: EMTResourcesService, useValue: mockResources }],
     })
     fireEvent.click(screen.getByRole('button', { name: /Reintentar/i }))

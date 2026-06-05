@@ -5,7 +5,6 @@ import {
   effect,
   inject,
   signal,
-  untracked,
 } from '@angular/core'
 import { MapComponent } from '@maplibre/ngx-maplibre-gl'
 import type { LngLatBoundsLike, Map as MaplibreMap } from 'maplibre-gl'
@@ -48,8 +47,7 @@ export class MapaEMTComponent {
   private readonly mapRef = signal<MaplibreMap | null>(null)
   readonly zoom = signal<number>(INITIAL_ZOOM[0])
 
-  // Tracks which line has already been fitted so we don't re-fit on poll updates
-  private readonly _fittedLinea = signal<string | null>(null)
+  private _fittedLinea: string | null = null
 
   private readonly mapFitBounds = computed((): LngLatBoundsLike | undefined => {
     const paradas = this.resources.paradasResource.value()
@@ -87,11 +85,11 @@ export class MapaEMTComponent {
       const bounds = this.mapFitBounds()
       const map = this.mapRef()
       if (!linea || !bounds || !map) return
-      if (untracked(() => this._fittedLinea()) === linea) return
+      if (this._fittedLinea === linea) return
 
       const cameraOpts = map.cameraForBounds(bounds, { padding: 40 })
       if (cameraOpts) map.jumpTo(cameraOpts)
-      untracked(() => this._fittedLinea.set(linea))
+      this._fittedLinea = linea
     })
   }
 

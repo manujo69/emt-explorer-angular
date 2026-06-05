@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal, untracked } from '@angular/core'
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core'
 import { MapService } from '@maplibre/ngx-maplibre-gl'
 import type { LngLatBoundsLike } from 'maplibre-gl'
 import { EMTResourcesService } from '../../services/emt-resources.service'
@@ -26,7 +26,7 @@ export class MapCameraControllerComponent {
   private readonly resources = inject(EMTResourcesService)
   private readonly store = inject(EMTStore)
 
-  private readonly fittedLinea = signal<string | null>(null)
+  private _fittedLinea: string | null = null
 
   constructor() {
     effect(() => {
@@ -34,12 +34,12 @@ export class MapCameraControllerComponent {
       const paradas = this.resources.paradasResource.value()
 
       if (!linea || !paradas?.length) return
-      if (untracked(() => this.fittedLinea()) === linea) return
+      if (this._fittedLinea === linea) return
 
       const bounds = computeBounds(paradas)
       try {
         this.mapService.fitBounds(bounds, { padding: 40 })
-        untracked(() => this.fittedLinea.set(linea))
+        this._fittedLinea = linea
       } catch {
         // Map not yet initialized — retry on next paradas change
       }

@@ -27,14 +27,14 @@ describe('MapCameraControllerComponent', () => {
   it('calls fitBounds when a line with paradas is selected', async () => {
     const mockMapService = new MapService()
     const mockResources = buildMockResources(PARADAS)
-    await render(MapCameraControllerComponent, {
+    const { fixture } = await render(MapCameraControllerComponent, {
       providers: [
         { provide: MapService, useValue: mockMapService },
         { provide: EMTResourcesService, useValue: mockResources },
       ],
     })
     TestBed.inject(EMTStore).setLineaSeleccionada('1')
-    TestBed.flushEffects()
+    fixture.detectChanges()
     expect(mockMapService.fitBounds).toHaveBeenCalledTimes(1)
     const bounds = mockMapService.fitBounds.mock.calls[0][0] as [[number, number], [number, number]]
     expect(bounds[0][0]).toBeCloseTo(-4.50) // min lng
@@ -44,7 +44,7 @@ describe('MapCameraControllerComponent', () => {
   it('does not call fitBounds again for the same line', async () => {
     const mockMapService = new MapService()
     const mockResources = buildMockResources(PARADAS)
-    await render(MapCameraControllerComponent, {
+    const { fixture } = await render(MapCameraControllerComponent, {
       providers: [
         { provide: MapService, useValue: mockMapService },
         { provide: EMTResourcesService, useValue: mockResources },
@@ -52,17 +52,17 @@ describe('MapCameraControllerComponent', () => {
     })
     const store = TestBed.inject(EMTStore)
     store.setLineaSeleccionada('1')
-    TestBed.flushEffects()
+    fixture.detectChanges()
     // Trigger effect again with the same line (simulating a paradas poll update)
     mockResources.paradasResource.value.set([...PARADAS])
-    TestBed.flushEffects()
+    fixture.detectChanges()
     expect(mockMapService.fitBounds).toHaveBeenCalledTimes(1)
   })
 
   it('calls fitBounds again when the line changes', async () => {
     const mockMapService = new MapService()
     const mockResources = buildMockResources(PARADAS)
-    await render(MapCameraControllerComponent, {
+    const { fixture } = await render(MapCameraControllerComponent, {
       providers: [
         { provide: MapService, useValue: mockMapService },
         { provide: EMTResourcesService, useValue: mockResources },
@@ -70,23 +70,23 @@ describe('MapCameraControllerComponent', () => {
     })
     const store = TestBed.inject(EMTStore)
     store.setLineaSeleccionada('1')
-    TestBed.flushEffects()
+    fixture.detectChanges()
     store.setLineaSeleccionada('2')
-    TestBed.flushEffects()
+    fixture.detectChanges()
     expect(mockMapService.fitBounds).toHaveBeenCalledTimes(2)
   })
 
   it('does not call fitBounds when paradas are empty', async () => {
     const mockMapService = new MapService()
     const mockResources = buildMockResources([])
-    await render(MapCameraControllerComponent, {
+    const { fixture } = await render(MapCameraControllerComponent, {
       providers: [
         { provide: MapService, useValue: mockMapService },
         { provide: EMTResourcesService, useValue: mockResources },
       ],
     })
     TestBed.inject(EMTStore).setLineaSeleccionada('1')
-    TestBed.flushEffects()
+    fixture.detectChanges()
     expect(mockMapService.fitBounds).not.toHaveBeenCalled()
   })
 })
